@@ -1,35 +1,32 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import CitizenPage from "./pages/CitizenPage";
-import SectorDashboard from "./pages/SectorDashboard";
-import GlobalDashboard from "./pages/GlobalDashboard";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import UserLayout from './components/UserLayout';
+import AdminLayout from './components/AdminLayout';
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import UserDashboard from './pages/UserDashboard';
+import AdminDashboard from './pages/AdminDashboard';
+import SectorDashboard from './pages/SectorDashboard';
 
 function App() {
-  const [complaints, setComplaints] = useState([]);
-
   return (
     <Router>
-      <Navbar />
-
       <Routes>
-        <Route
-          path="/"
-          element={
-            <CitizenPage
-              complaints={complaints}
-              setComplaints={setComplaints}
-            />
-          }
-        />
-        <Route
-          path="/sector"
-          element={<SectorDashboard data={complaints} />}
-        />
-        <Route
-          path="/global"
-          element={<GlobalDashboard data={complaints} />}
-        />
+        <Route path="/login" element={<Login />} />
+        
+        <Route element={<ProtectedRoute allowedRole="user" />}>
+          <Route path="/" element={<UserLayout />}>
+            <Route index element={<Home />} />
+            <Route path="dashboard" element={<UserDashboard />} />
+          </Route>
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRole="admin" />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="sector/:name" element={<SectorDashboard />} />
+          </Route>
+        </Route>
       </Routes>
     </Router>
   );
