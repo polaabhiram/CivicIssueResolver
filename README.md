@@ -203,6 +203,3 @@ curl -X POST http://localhost:8000/api/complaints \
 - Several unused files from an earlier prototype remain in `frontend/src` (`Navbar`, `ComplainForm`, `ComplaintTable`, `CitizenPage`, `GlobalDashboard`).
 
 ---
-
-## License
-Add a license of your choice (e.g. MIT).
